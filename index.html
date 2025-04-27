@@ -1123,7 +1123,7 @@ TRY YOUR LUCK ! &#128640;
       if (!mouseMoved || audioHash === 'audio-fingerprint-failed') {
         document.getElementById('status').innerText = "Suspicious behavior detected. Please reload.";
         await delay(2000);
-        location.reload();
+        showRecaptchaBox();
         return;
       }
 
