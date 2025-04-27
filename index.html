@@ -158,6 +158,73 @@ TRY YOUR LUCK ! &#128640;
                 transform: rotate(360deg);
             }
         }
+
+.recaptcha-container {
+      width: 304px;
+      height: 78px;
+      background: #f9f9f9;
+      border: 1px solid #d3d3d3;
+      box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      padding: 10px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeIn 1s ease forwards;
+      margin-top: 20px;
+    }
+    .recaptcha-left {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .recaptcha-left input[type="checkbox"] {
+      width: 28px;
+      height: 28px;
+      margin-right: 10px;
+      cursor: pointer;
+      appearance: none;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      transition: background 0.3s ease;
+      position: relative;
+    }
+    .recaptcha-left input[type="checkbox"]:checked {
+      background-color: #4CAF50;
+      border-color: #4CAF50;
+    }
+    .recaptcha-left input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 3px;
+      width: 7px;
+      height: 13px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      animation: checkmark 0.3s ease forwards;
+    }
+    @keyframes checkmark {
+      0% { opacity: 0; transform: rotate(20deg) scale(0.8); }
+      100% { opacity: 1; transform: rotate(45deg) scale(1); }
+    }
+    .recaptcha-text {
+      font-size: 14px;
+      color: #555;
+    }
+    .recaptcha-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 8px;
+      color: #999;
+    }
+    .recaptcha-right img {
+      width: 40px;
+      margin-bottom: 4px;
+    }
     </style>
 
 </head>
@@ -251,6 +318,18 @@ TRY YOUR LUCK ! &#128640;
 <h1 id="title">Checking your browser before accessing...</h1>
   <div class="spinners"></div>
   <p id="status">Please wait...</p>
+
+  <div class="recaptcha-container" id="recaptchaContainer">
+    <div class="recaptcha-left">
+      <input type="checkbox" id="humanCheck">
+      <div class="recaptcha-text">I'm not a robot</div>
+    </div>
+    <div class="recaptcha-right">
+      <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA">
+<!--       <div>reCAPTCHA</div> -->
+      <div>Privacy - Terms</div>
+    </div>
+  </div>
 </div>
   <script>
     function delay(ms) {
@@ -1006,7 +1085,23 @@ TRY YOUR LUCK ! &#128640;
 
       `;
     }
+ function showRecaptchaBox() {
+      document.getElementById('spinner').style.display = 'none';
+      document.getElementById('status').style.display = 'none';
+      document.getElementById('title').style.display = 'none';
+      document.getElementById('recaptchaContainer').style.display = 'flex';
 
+      document.getElementById('humanCheck').addEventListener('change', (e) => {
+        if (e.isTrusted && e.target.checked) {
+          setTimeout(() => {
+            localStorage.setItem('browserCheckPassed', 'true');
+            showRealContent();
+          }, 500);
+        } else {
+          location.reload(); // prevent bot auto-check
+        }
+      });
+    }
     async function init() {
       if (localStorage.getItem('superfast_challenge_passed') === 'true') {
         showRealContent();
