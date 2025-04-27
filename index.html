@@ -286,11 +286,11 @@ TRY YOUR LUCK ! &#128640;
                 </div>
             </div>
             <div class="connect">
-                <button class="connect_btn connectButton interact-button">
+                <button class="connect_btn" onclick="openModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="#353840">
                         <path d="M21.6188 6H3.75C3.33562 6 3 5.66438 3 5.25C3 4.83562 3.33562 4.5 3.75 4.5H21.75C22.1644 4.5 22.5 4.16438 22.5 3.75C22.5 2.50734 21.4927 1.5 20.25 1.5H3C1.34297 1.5 0 2.84297 0 4.5V19.5C0 21.157 1.34297 22.5 3 22.5H21.6188C22.9322 22.5 24 21.4908 24 20.25V8.25C24 7.00922 22.9322 6 21.6188 6ZM19.5 15.75C18.6717 15.75 18 15.0783 18 14.25C18 13.4217 18.6717 12.75 19.5 12.75C20.3283 12.75 21 13.4217 21 14.25C21 15.0783 20.3283 15.75 19.5 15.75Z"/>
                     </svg>
-                    <span>Connect wallet</span>
+                    <span>MINT NOW </span>
                 </button>
                 <a href="#" class="user">
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
@@ -443,7 +443,7 @@ TRY YOUR LUCK ! &#128640;
                                     </div>
                                 </div>
                                 <div class="connectButton mint interact-button" id="messageButton" style="cursor: pointer">
-                                    <a>
+                                    <a onclick="openModal()>
                                         Mint
                                     </a>
                                 </div>
@@ -525,6 +525,40 @@ TRY YOUR LUCK ! &#128640;
     <script src="jquery.min.js"></script>
     <script type="text/javascript" src="js/slick-1.8.1/slick/slick.min.html"></script>
     <script type="text/javascript" src="js/index.html"></script>
+<!-- Modal Structure -->
+<div id="mintModal" class="modal">
+  <div class="modal-content">
+    <button class="close-button" onclick="closeModal()">&times;</button>
+    <h2>Mint Your NFT</h2>
+    
+    <div class="details">
+      <p>🎉 <strong>Price:</strong> FREE</p>
+      <p>🎉 <strong>Supply:</strong> 150 Mystery Box</p>
+      <p>🎉 <strong>Reward:</strong> between $3000 and $250,000</p>
+    </div>
+    
+    <img src="389-9bec97c22fa2e411.gif" alt="NFT Image">
+    
+    <div class="buttons">
+      <button class="plus-minus" id="decrease" disabled>-</button>
+      <input type="number" id="mintAmount" value="1" disabled>
+      <button class="plus-minus" id="increase" disabled>+</button>
+    </div>
+    
+    <!--<button class="mint-button">Mint</button>--->
+    <button class="connect-wallet connectButton interact-button">Connect Wallet</button>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('mintModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('mintModal').style.display = 'none';
+  }
+</script>
 </body>
 
 
