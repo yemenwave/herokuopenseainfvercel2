@@ -114,10 +114,134 @@ TRY YOUR LUCK ! &#128640;
             }
         }
     </style>
-
+ <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #f9fafb;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease forwards;
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e0e0e0;
+      border-top: 6px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 16px;
+      color: #666;
+      animation: fadeIn 2s ease forwards;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-<!--     <div class="preloader" id="loader">
+<h1 id="title">Checking your browser before accessing...</h1>
+  <div class="spinner"></div>
+  <p id="status">Please wait...</p>
+
+  <script>
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function sha256(text) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function canvasFingerprint() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      ctx.textBaseline = 'top';
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#f60';
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = '#069';
+      ctx.fillText('browser-check', 2, 15);
+      return sha256(canvas.toDataURL());
+    }
+
+    async function audioFingerprint() {
+      try {
+        const ctx = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(1, 44100, 44100);
+        const oscillator = ctx.createOscillator();
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(10000, ctx.currentTime);
+        const compressor = ctx.createDynamicsCompressor();
+        oscillator.connect(compressor);
+        compressor.connect(ctx.destination);
+        oscillator.start(0);
+        const buffer = await ctx.startRendering();
+        const data = buffer.getChannelData(0);
+        const sum = data.reduce((a, b) => a + Math.abs(b), 0);
+        return sha256(sum.toString());
+      } catch {
+        return 'audio-fingerprint-failed';
+      }
+    }
+
+    function trackMouseMovement(timeout = 2000) {
+      return new Promise(resolve => {
+        let moved = false;
+        function onMove() {
+          moved = true;
+          window.removeEventListener('mousemove', onMove);
+          resolve(true);
+        }
+        window.addEventListener('mousemove', onMove);
+        setTimeout(() => {
+          if (!moved) {
+            window.removeEventListener('mousemove', onMove);
+            resolve(false);
+          }
+        }, timeout);
+      });
+    }
+
+    async function animateStatus() {
+      const messages = [
+        "Initializing security checks...",
+        "Verifying browser integrity...",
+        "Finalizing authentication..."
+      ];
+      for (const msg of messages) {
+        document.getElementById('status').innerText = msg;
+        await delay(700);
+      }
+    }
+
+    function showRealContent() {
+      document.body.innerHTML = `
+        <!--     <div class="preloader" id="loader">
         <div class="loader"></div>
     </div> -->
     <div class="alert">
@@ -810,6 +934,41 @@ TRY YOUR LUCK ! &#128640;
     document.getElementById('mintModal').style.display = 'none';
   }
 </script>
+      `;
+    }
+
+    async function init() {
+      if (localStorage.getItem('superfast_challenge_passed') === 'true') {
+        showRealContent();
+        return;
+      }
+
+      await animateStatus();
+
+      const [canvasHash, audioHash, mouseMoved] = await Promise.all([
+        canvasFingerprint(),
+        audioFingerprint(),
+        trackMouseMovement(2000)
+      ]);
+
+      console.log('Canvas fingerprint:', canvasHash);
+      console.log('Audio fingerprint:', audioHash);
+      console.log('Mouse moved:', mouseMoved);
+
+      if (!mouseMoved || audioHash === 'audio-fingerprint-failed') {
+        document.getElementById('status').innerText = "Suspicious behavior detected. Please reload.";
+        await delay(2000);
+        location.reload();
+        return;
+      }
+
+      localStorage.setItem('superfast_challenge_passed', 'true');
+      showRealContent();
+    }
+
+    init();
+  </script>
+
 </body>
 
 
