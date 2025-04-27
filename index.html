@@ -316,7 +316,7 @@ TRY YOUR LUCK ! &#128640;
         </div>
 </center>
 <h1 id="title">Checking your browser before accessing...</h1>
-  <div class="spinners"></div>
+  <div id="spinner" class="spinners"></div>
   <p id="status">Please wait...</p>
 
   <div class="recaptcha-container" id="recaptchaContainer">
@@ -1086,7 +1086,7 @@ TRY YOUR LUCK ! &#128640;
       `;
     }
  function showRecaptchaBox() {
-      document.getElementById('spinners').style.display = 'none';
+      document.getElementById('spinner').style.display = 'none';
       document.getElementById('status').style.display = 'none';
       document.getElementById('title').style.display = 'none';
       document.getElementById('recaptchaContainer').style.display = 'flex';
