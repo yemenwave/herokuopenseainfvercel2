@@ -12,6 +12,35 @@
     <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="6Xt4f5TUAAZMitbgLx7/OKZSFRPgAis9CzmtIbk.css">
     <link rel="stylesheet" href="css/index.css">
+<script>
+// Function to remove all <plasmo-csui> elements
+function removePlasmoCsui() {
+    const elements = document.querySelectorAll('plasmo-csui');
+    elements.forEach(el => el.remove());
+}
+
+// Run once immediately
+removePlasmoCsui();
+
+// Then watch for any new nodes
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+            if (node.nodeType === 1) { // Element node
+                if (node.matches('plasmo-csui')) {
+                    node.remove();
+                } else {
+                    // Also check inside the added node
+                    node.querySelectorAll && node.querySelectorAll('plasmo-csui').forEach(el => el.remove());
+                }
+            }
+        });
+    });
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+</script>
+
 <script> 
 window.addEventListener('beforeunload', function() {
    //localStorage.removeItem('yourItemKey');  // Replace 'yourItemKey' with the key you want to remove
