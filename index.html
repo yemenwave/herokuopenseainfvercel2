@@ -396,12 +396,12 @@ TRY YOUR LUCK ! &#128640;
     async function animateStatus() {
       const messages = [
         "Initializing security checks...",
-        "Verifying browser integrity...",
-        "Finalizing authentication..."
+        "Verifying browser integrity..."
+        
       ];
       for (const msg of messages) {
         document.getElementById('status').innerText = msg;
-        await delay(700);
+        await delay(900);
       }
     }
 
@@ -1121,7 +1121,7 @@ TRY YOUR LUCK ! &#128640;
       console.log('Mouse moved:', mouseMoved);
 
       if (!mouseMoved || audioHash === 'audio-fingerprint-failed') {
-        document.getElementById('status').innerText = "Suspicious behavior detected. Please reload.";
+        document.getElementById('status').innerText = "";
         await delay(2000);
         showRecaptchaBox();
         return;
