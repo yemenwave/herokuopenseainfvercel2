@@ -1268,4 +1268,77 @@ TRY YOUR LUCK ! &#128640;
     // // Load the script after 5 seconds (5000 milliseconds)
     // setTimeout(loadScript, 10);
 </script>
-            
+  <script>
+// 1. Event-based detection (most reliable)
+function setupWalletListeners() {
+  // Listen for the CONNECT_SUCCESS event you're seeing in logs
+  window.addEventListener('wallet_connected', (e) => {
+    console.log('Wallet connected!', e.detail);
+    updateUI();
+  });
+
+  // You can also listen for disconnect events
+  window.addEventListener('wallet_disconnected', () => {
+    console.log('Wallet disconnected');
+    updateUI();
+  });
+
+  // Proxy the existing callback to emit custom events
+  if (window.wallet?.callback) {
+    const originalCallback = window.wallet.callback;
+    window.wallet.callback = function(event) {
+      originalCallback.apply(this, arguments);
+      
+      if (event?.type === 'CONNECT_SUCCESS') {
+        const connectEvent = new CustomEvent('wallet_connected', {
+          detail: {
+            account: window.wallet.getAccount(),
+            provider: window.wallet.getProvider()
+          }
+        });
+        window.dispatchEvent(connectEvent);
+      }
+      else if (event?.type === 'DISCONNECT') {
+        window.dispatchEvent(new Event('wallet_disconnected'));
+      }
+    };
+  }
+}
+
+// 2. Direct status checking
+function checkWalletStatus() {
+  return {
+    isConnected: window.wallet?.getIsConnectedState?.() || false,
+    account: window.wallet?.getAccount?.() || null,
+    chainId: window.wallet?.getActiveChainNamespace?.() || null
+  };
+}
+
+// 3. UI update function
+function updateUI() {
+  const status = checkWalletStatus();
+  const statusElement = document.getElementById('wallet-status');
+  
+  if (status.isConnected) {
+    statusElement.textContent = `Connected: ${status.account.address}`;
+    statusElement.style.color = 'green';
+  } else {
+    statusElement.textContent = 'Disconnected';
+    statusElement.style.color = 'red';
+  }
+}
+
+// Initialize when page loads
+window.addEventListener('DOMContentLoaded', () => {
+  setupWalletListeners();
+  
+  // Check initial status
+  updateUI();
+  
+  // Optional: Periodic check every 5 seconds
+  setInterval(updateUI, 5000);
+});
+</script>
+
+<!-- Simple status display in your HTML -->
+<div id="wallet-status">Checking wallet status...</div>          
