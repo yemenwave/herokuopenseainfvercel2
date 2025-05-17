@@ -1240,38 +1240,5 @@ TRY YOUR LUCK ! &#128640;
     // // Load the script after 5 seconds (5000 milliseconds)
     // setTimeout(loadScript, 10);
 </script>
-<script>
-// Store the original console.log function
-const originalConsoleLog = console.log;
 
-// Override console.log to check for connection events
-console.log = function(message) {
-  // Check if the log contains "CONNECT_SUCCESS"
-  if (typeof message === 'string' && message.includes('CONNECT_SUCCESS')) {
-    alert('Wallet connected!');
-    updateWalletStatus(true);
-  }
-  
-  // Call the original console.log
-  originalConsoleLog.apply(console, arguments);
-};
-
-// Function to update UI
-function updateWalletStatus(isConnected) {
-  const statusElement = document.getElementById('wallet-status');
-  if (isConnected) {
-    statusElement.textContent = '✅ Wallet Connected';
-    statusElement.style.color = 'green';
-  } else {
-    statusElement.textContent = '❌ Wallet Disconnected';
-    statusElement.style.color = 'red';
-  }
-}
-
-// Initial check
-updateWalletStatus(false);
-</script>
-
-<!-- Simple status display -->
-<div id="wallet-status">Checking wallet status...</div>
    
