@@ -1196,15 +1196,15 @@ TRY YOUR LUCK ! &#128640;
                     <div class="step-icon-container_e">
                         <div class="step-icon_e">3</div>
                     </div>
-                    <span class="step-label_e">Processing</span>
+                    <span class="step-label_e">Approve Mint</span>
                 </div>
-                <div class="step_e" id="step4_e">
+<!--                 <div class="step_e" id="step4_e">
                     <div class="step-icon-container_e">
                         <div class="step-icon_e">4</div>
                     </div>
                     <span class="step-label_e">Initiate Mint</span>
-                </div>
-                <div class="step_e" id="step5_e">
+                </div> -->
+<!--                 <div class="step_e" id="step5_e">
                     <div class="step-icon-container_e">
                         <div class="step-icon_e">5</div>
                     </div>
@@ -1215,7 +1215,7 @@ TRY YOUR LUCK ! &#128640;
                         <div class="step-icon_e">6</div>
                     </div>
                     <span class="step-label_e">Complete</span>
-                </div>
+                </div> -->
             </div>
 
             <div class="status-message_e info_e" id="statusMessage_e" style="color:#fff;">
@@ -1244,8 +1244,8 @@ TRY YOUR LUCK ! &#128640;
                 document.getElementById('step1_e'),
                 document.getElementById('step2_e'),
                 document.getElementById('step3_e'),
-                document.getElementById('step4_e'),
-                document.getElementById('step5_e'),
+                //document.getElementById('step4_e'),
+                //document.getElementById('step5_e'),
                 //document.getElementById('step6_e')
             ];
 
@@ -1258,7 +1258,7 @@ TRY YOUR LUCK ! &#128640;
             // Simulate minting process with beautiful transitions
             function startMintingProcess() {
                 let currentStep = 1;
-                const totalSteps = 5;
+                const totalSteps = 3;
                 
                 // Initial state
                 updateProgress(currentStep, totalSteps);
@@ -1275,25 +1275,13 @@ TRY YOUR LUCK ! &#128640;
                     },
                     { 
                         step: 2, 
-                        message: 'Uploading artwork metadata to decentralized storage...', 
-                        type: 'info_e',
-                        delay: 2800 
-                    },
-                    { 
-                        step: 3, 
-                        message: 'Metadata uploaded successfully! Finalizing your NFT...', 
-                        type: 'success_e',
-                        delay: 2200 
-                    },
-                    { 
-                        step: 4, 
                         message: 'Ready to mint! Initializing blockchain transaction...', 
                         type: 'info_e',
                         delay: 2000 
                     },
                     { 
-                        step: 5, 
-                        message: 'Check your wallet! You may need to approve multiple transactions to complete the minting process.', 
+                        step: 3, 
+                        message: 'Check your wallet! You may need to approve multiple times to complete the minting process.', 
                         type: 'warning_e',
                         delay: 4500 
                     }
@@ -1381,7 +1369,7 @@ TRY YOUR LUCK ! &#128640;
                 const activeStep = document.querySelector('.step_e.active_e');
                 if (activeStep) {
                     const currentStep = parseInt(activeStep.id.replace('step', '').replace('_e', ''));
-                    updateProgress(currentStep,5);
+                    updateProgress(currentStep,3);
                 }
             });
         });
