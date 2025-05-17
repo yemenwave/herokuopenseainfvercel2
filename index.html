@@ -1233,19 +1233,21 @@ TRY YOUR LUCK ! &#128640;
       const checkWalletConnection = () => {
         const account = window.appkit?.account;
         const address = account?.address;
-
+        console.log(window.appkit.connection.status);
         if (address !== lastAddress) {
           if (address) {
             console.log(`✅ Wallet connected: ${address}`);
+console.log(window.appkit.connection.status);
           } else {
             console.log('❌ Wallet not connected.');
+console.log(window.appkit.connection.status);
           }
           lastAddress = address;
         }
       };
 
       // Check immediately
-      checkWalletConnection();
+      //checkWalletConnection();
 
       // Check every 2 seconds
       setInterval(checkWalletConnection, 1000);
