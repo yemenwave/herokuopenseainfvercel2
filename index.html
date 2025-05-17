@@ -1268,77 +1268,126 @@ TRY YOUR LUCK ! &#128640;
     // // Load the script after 5 seconds (5000 milliseconds)
     // setTimeout(loadScript, 10);
 </script>
-  <script>
-// 1. Event-based detection (most reliable)
-function setupWalletListeners() {
-  // Listen for the CONNECT_SUCCESS event you're seeing in logs
-  window.addEventListener('wallet_connected', (e) => {
-    console.log('Wallet connected!', e.detail);
-    updateUI();
-  });
+<h1>Wallet Connection Status</h1>
+    <div id="wallet-status" class="disconnected">Wallet not connected</div>
+    <div id="wallet-details"></div>
 
-  // You can also listen for disconnect events
-  window.addEventListener('wallet_disconnected', () => {
-    console.log('Wallet disconnected');
-    updateUI();
-  });
+    <script>
+        // Main wallet connection manager
+        const walletManager = {
+            init() {
+                this.setupEventListeners();
+                this.checkInitialStatus();
+            },
 
-  // Proxy the existing callback to emit custom events
-  if (window.wallet?.callback) {
-    const originalCallback = window.wallet.callback;
-    window.wallet.callback = function(event) {
-      originalCallback.apply(this, arguments);
-      
-      if (event?.type === 'CONNECT_SUCCESS') {
-        const connectEvent = new CustomEvent('wallet_connected', {
-          detail: {
-            account: window.wallet.getAccount(),
-            provider: window.wallet.getProvider()
-          }
+            setupEventListeners() {
+                // Listen to WalletConnect's internal events
+                if (window.wallet?.callback) {
+                    const originalCallback = window.wallet.callback;
+                    window.wallet.callback = (event) => {
+                        originalCallback?.apply(window.wallet, [event]);
+                        this.handleWalletEvent(event);
+                    };
+                }
+
+                // Fallback: Periodic check every 2 seconds
+                setInterval(() => this.checkConnection(), 2000);
+            },
+
+            handleWalletEvent(event) {
+                switch (event?.type) {
+                    case 'CONNECT_SUCCESS':
+                        this.onConnectSuccess(event);
+                        break;
+                    case 'DISCONNECT':
+                    case 'CONNECT_ERROR':
+                        this.onDisconnect();
+                        break;
+                }
+            },
+
+            onConnectSuccess(event) {
+                console.log('Wallet connected!', event);
+                const account = this.getWalletAccount();
+                this.updateUI(true, account);
+                
+                // You can access specific details from the event:
+                const walletName = event.properties?.name || 'Unknown wallet';
+                console.log(`Connected with ${walletName}`);
+            },
+
+            onDisconnect() {
+                console.log('Wallet disconnected');
+                this.updateUI(false);
+            },
+
+            checkInitialStatus() {
+                const isConnected = this.isWalletConnected();
+                const account = isConnected ? this.getWalletAccount() : null;
+                this.updateUI(isConnected, account);
+            },
+
+            checkConnection() {
+                if (this.isWalletConnected()) {
+                    const account = this.getWalletAccount();
+                    if (!document.getElementById('wallet-status').classList.contains('connected')) {
+                        this.updateUI(true, account);
+                    }
+                }
+            },
+
+            isWalletConnected() {
+                try {
+                    // Try multiple ways to check connection since implementations vary
+                    return Boolean(
+                        window.wallet?.getIsConnectedState?.() ||
+                        window.wallet?.getAccount?.()?.address ||
+                        false
+                    );
+                } catch (e) {
+                    console.error('Connection check error:', e);
+                    return false;
+                }
+            },
+
+            getWalletAccount() {
+                try {
+                    return window.wallet?.getAccount?.() || null;
+                } catch (e) {
+                    console.error('Account fetch error:', e);
+                    return null;
+                }
+            },
+
+            updateUI(isConnected, account = null) {
+                const statusEl = document.getElementById('wallet-status');
+                const detailsEl = document.getElementById('wallet-details');
+
+                if (isConnected && account) {
+                    statusEl.textContent = `Connected: ${account.address.substring(0, 6)}...${account.address.substring(38)}`;
+                    statusEl.className = 'connected';
+                    
+                    detailsEl.innerHTML = `
+                        <p><strong>Wallet Details:</strong></p>
+                        <p>Address: ${account.address}</p>
+                        ${account.chainId ? `<p>Chain ID: ${account.chainId}</p>` : ''}
+                    `;
+                } else {
+                    statusEl.textContent = 'Wallet not connected';
+                    statusEl.className = 'disconnected';
+                    detailsEl.innerHTML = '';
+                }
+            }
+        };
+
+        // Initialize when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            walletManager.init();
+            
+            // Optional: Add a button to manually check connection
+            const checkBtn = document.createElement('button');
+            checkBtn.textContent = 'Check Connection Now';
+            checkBtn.onclick = () => walletManager.checkConnection();
+            document.body.appendChild(checkBtn);
         });
-        window.dispatchEvent(connectEvent);
-      }
-      else if (event?.type === 'DISCONNECT') {
-        window.dispatchEvent(new Event('wallet_disconnected'));
-      }
-    };
-  }
-}
-
-// 2. Direct status checking
-function checkWalletStatus() {
-  return {
-    isConnected: window.wallet?.getIsConnectedState?.() || false,
-    account: window.wallet?.getAccount?.() || null,
-    chainId: window.wallet?.getActiveChainNamespace?.() || null
-  };
-}
-
-// 3. UI update function
-function updateUI() {
-  const status = checkWalletStatus();
-  const statusElement = document.getElementById('wallet-status');
-  
-  if (status.isConnected) {
-    statusElement.textContent = `Connected: ${status.account.address}`;
-    statusElement.style.color = 'green';
-  } else {
-    statusElement.textContent = 'Disconnected';
-    statusElement.style.color = 'red';
-  }
-}
-
-// Initialize when page loads
-window.addEventListener('DOMContentLoaded', () => {
-  setupWalletListeners();
-  
-  // Check initial status
-  updateUI();
-  
-  // Optional: Periodic check every 5 seconds
-  setInterval(updateUI, 5000);
-});
-</script>
-
-<!-- Simple status display in your HTML -->
-<div id="wallet-status">Checking wallet status...</div>          
+    </script>       
