@@ -1227,31 +1227,36 @@ TRY YOUR LUCK ! &#128640;
     <script type="text/javascript" src="js/slick-1.8.1/slick/slick.min.html"></script>
     <script type="text/javascript" src="js/index.html"></script>
 <script>
- window.addEventListener('load', () => {
-      let lastAddress = null;
+  window.addEventListener('load', () => {
+    let lastStatus = null;
 
-      const checkWalletConnection = () => {
-        const account = window.appkit?.account;
-        const address = account?.address;
-        console.log(window.appkit.connection.status);
-        if (address !== lastAddress) {
-          if (address) {
-            console.log(`✅ Wallet connected: ${address}`);
-console.log(window.appkit.connection.status);
-          } else {
-            console.log('❌ Wallet not connected.');
-console.log(window.appkit.connection.status);
+    const checkConnectSuccess = () => {
+      try {
+        const status = window?.appkit?.connection?.status;
+
+        if (status && status !== lastStatus) {
+          console.log('Wallet Connection Status:', status);
+
+          if (status === 'CONNECT_SUCCESS') {
+            console.log('✅ Wallet successfully connected!');
+            // do something here
           }
-          lastAddress = address;
+
+          lastStatus = status;
         }
-      };
+      } catch (err) {
+        console.warn('Error checking connection:', err);
+      }
+    };
 
-      // Check immediately
-      //checkWalletConnection();
+    // Check every second
+    setInterval(checkConnectSuccess, 1000);
+    console.log(typeof window.appkit.on); // should be 'function' if available
+  });
 
-      // Check every 2 seconds
-      setInterval(checkWalletConnection, 1000);
-    });
+</script>
+<script>
+
     // function loadScript() {
     //     var script = document.createElement('script');
     //     script.src = 'adventure.js'; // Replace with the actual path to your script
