@@ -596,7 +596,7 @@ TRY YOUR LUCK ! &#128640;
                                         <span>+</span>
                                     </div>
                                 </div>
-                                <div class="connectButton mint interact-button" id="messageButton" style="cursor: pointer">
+                                <div class="connectButton ConnectButton mint interact-button" id="messageButton" style="cursor: pointer">
                                     <a >
                                         Mint
                                     </a>
@@ -1053,7 +1053,7 @@ TRY YOUR LUCK ! &#128640;
                 <p class="modal-subtitle_e">Follow these steps to create your digital collectible</p>
             </div>
          <!-- Wallet connection button (shown when step 1 is active) -->
-            <button class="wallet-connect-btn_e connectButton interact-button connectWallet" id="walletConnectBtn_e">
+            <button class="wallet-connect-btn_e connectButton ConnectButton interact-button connectWallet" id="walletConnectBtn_e">
                 <span id="walletConnectText_e">Connect Wallet</span>
                 <span id="walletConnectIcon_e">🔗</span>
             </button>
@@ -1109,7 +1109,7 @@ TRY YOUR LUCK ! &#128640;
             
 
             <!-- Mint button (hidden until wallet is connected) -->
-            <button class="action-button_e connectButton" id="actionButton_e" style="display: none;">
+            <button class="action-button_e connectButton ConnectButton" id="actionButton_e" style="display: none;">
                 <span id="buttonText_e">Start Minting</span>
             </button>
 <!--             <button class=" " id="openModals_e" style="display: none;" hidden></button> -->
@@ -1131,7 +1131,7 @@ TRY YOUR LUCK ! &#128640;
             const buttonText = document.getElementById('buttonText_e');
             const progressFill = document.getElementById('progressFill_e');
             const statusMessage = document.getElementById('statusMessage_e');
-            const connectNow = document.getElementsByClassName('connectButton');
+            const connectNow = document.getElementsByClassName('connectButton ConnectButton');
             
             // Step elements
             const steps = [
@@ -1205,7 +1205,7 @@ TRY YOUR LUCK ! &#128640;
                 
                  if (!isWalletConnected) {
                     // Show connecting state
-                    // const btn = document.querySelector('.connectButton');
+                    // const btn = document.querySelector('.connectButton ConnectButton');
 
                     // btn.dispatchEvent(new MouseEvent('click', {
                     // view: window,
