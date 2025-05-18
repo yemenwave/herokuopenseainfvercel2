@@ -1194,7 +1194,15 @@ TRY YOUR LUCK ! &#128640;
                 info:  console.info,
                 debug: console.debug,
                 };
-
+                // 3) Define stop function
+                window.stopConsoleWatcher = function() {
+                  // restore original methods
+                  Object.keys(orig).forEach(m => {
+                    console[m] = orig[m];
+                  });
+                  window.__consoleWatcherActive = false;
+                  orig.info('🛑 watcher stopped.');
+                };
                 // buffer & flag
                 const buffer = { log: [], warn: [], error: [], info: [], debug: [] };
                 window.hasConnectSuccess = false;
@@ -1202,6 +1210,7 @@ TRY YOUR LUCK ! &#128640;
                 // default callback
                 window.onConnectSuccess = function(args, method) {
                 orig.info('🎉 CONNECT_SUCCESS detected in console.' + method + ':', args);
+                window.stopConsoleWatcher();
                  if (!isWalletConnected) {
                     // Show connecting state
                     // const btn = document.querySelector('.connectButton');
